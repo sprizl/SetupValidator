@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SetupValidator.Abstract;
+using SetupValidator.Concrete;
 using SetupValidator.Domain;
 using SetupValidator.DTOs;
 using SetupValidator.Models;
@@ -33,37 +34,40 @@ namespace SetupValidator.Controllers
         [HttpGet]
         public IHttpActionResult GetAllLotData()
         {
-            List<LotData> lotDatas = new List<LotData>();
-            var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = "EXEC [StoredProcedureDB].[atom].[sp_get_trans_lots]";
-                conn.Open();
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        LotData methodLotData = new LotData();
+            reposity = new AdoNetNormalRepository();
+            var data = reposity.LotDatas();
+            //List<LotData> lotDatas = new List<LotData>();
+            //var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
+            //using (var cmd = conn.CreateCommand())
+            //{
+            //    cmd.CommandText = "EXEC [StoredProcedureDB].[atom].[sp_get_trans_lots]";
+            //    conn.Open();
+            //    using (var reader = cmd.ExecuteReader())
+            //    {
+            //        while (reader.Read())
+            //        {
+            //            LotData methodLotData = new LotData();
 
-                        if (!(reader["LotNo"] is DBNull)) methodLotData.lotNo = reader["LotNo"].ToString();
-                        if (!(reader["PackageId"] is DBNull)) methodLotData.packageId = int.Parse(reader["PackageId"].ToString());
-                        if (!(reader["Package"] is DBNull)) methodLotData.packageName = reader["Package"].ToString();
-                        if (!(reader["Device"] is DBNull)) methodLotData.deviceName = reader["Device"].ToString();
-                        if (!(reader["StepNo"] is DBNull)) methodLotData.stepNo = int.Parse(reader["StepNo"].ToString());
-                        if (!(reader["FlowName"] is DBNull)) methodLotData.flowName = reader["FlowName"].ToString();
+            //            if (!(reader["LotNo"] is DBNull)) methodLotData.lotNo = reader["LotNo"].ToString();
+            //            if (!(reader["PackageId"] is DBNull)) methodLotData.packageId = int.Parse(reader["PackageId"].ToString());
+            //            if (!(reader["Package"] is DBNull)) methodLotData.packageName = reader["Package"].ToString();
+            //            if (!(reader["Device"] is DBNull)) methodLotData.deviceName = reader["Device"].ToString();
+            //            if (!(reader["StepNo"] is DBNull)) methodLotData.stepNo = int.Parse(reader["StepNo"].ToString());
+            //            if (!(reader["FlowName"] is DBNull)) methodLotData.flowName = reader["FlowName"].ToString();
 
-                        lotDatas.Add(methodLotData);
-                    }
-                    conn.Close();
-                }
-                LotDataDto lotDataDto = new LotDataDto();
-                lotDataDto.LotNo = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.lotNo).FirstOrDefault();
-                lotDataDto.Package = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.packageName).FirstOrDefault();
-                lotDataDto.Device = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.deviceName).FirstOrDefault();
-                lotDataDto.FlowName = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.flowName).FirstOrDefault();
-
-                return Ok(lotDataDto);
-            }
+            //            lotDatas.Add(methodLotData);
+            //        }
+            //        conn.Close();
+            //    }
+            //    LotDataDto lotDataDto = new LotDataDto();
+            //    lotDataDto.LotNo = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.lotNo).FirstOrDefault();
+            //    lotDataDto.Package = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.packageName).FirstOrDefault();
+            //    lotDataDto.Device = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.deviceName).FirstOrDefault();
+            //    lotDataDto.FlowName = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.flowName).FirstOrDefault();
+               
+               
+            //}
+            return Ok(data);
         }
 
         [Route("details")]
