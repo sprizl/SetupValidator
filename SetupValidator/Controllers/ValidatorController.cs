@@ -19,14 +19,14 @@ namespace SetupValidator.Controllers
         //Called Data from DB through GetData();
         public INormalRepository reposity;
 
-        public ValidatorController(INormalRepository repo)
-        {
-            reposity = repo;
-        }
-
-        //public ValidatorController()
+        //public ValidatorController(INormalRepository repo)
         //{
+        //    reposity = repo;
         //}
+
+        public ValidatorController()
+        {
+        }
 
         [Route("")]
         //[ResponseType(typeof(LotDataDto))]
