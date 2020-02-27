@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetupValidator", "SetupValidator\SetupValidator.csproj", "{6BFAE271-C10D-4B21-B1F6-03D39DC7E711}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User", "User\User.csproj", "{F652B109-2A9D-404F-A68C-4D3DBC2CEA02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BFAE271-C10D-4B21-B1F6-03D39DC7E711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BFAE271-C10D-4B21-B1F6-03D39DC7E711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BFAE271-C10D-4B21-B1F6-03D39DC7E711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BFAE271-C10D-4B21-B1F6-03D39DC7E711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F652B109-2A9D-404F-A68C-4D3DBC2CEA02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F652B109-2A9D-404F-A68C-4D3DBC2CEA02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F652B109-2A9D-404F-A68C-4D3DBC2CEA02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F652B109-2A9D-404F-A68C-4D3DBC2CEA02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {002F82E1-EAE3-48CE-90F5-D7041D656ED6}
+	EndGlobalSection
+EndGlobal

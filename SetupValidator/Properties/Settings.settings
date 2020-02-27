@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SetupValidator.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ProConnecting" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Data Source=172.16.0.102;Initial Catalog=APCSProDB;User ID=system;Password=p@$$w0rd;Application Name=Validator;</Value>
+    </Setting>
+    <Setting Name="DBConnecting" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Data Source=172.16.0.102;Initial Catalog=DBx;User ID=system;Password=p@$$w0rd;Application Name=Validator;</Value>
+    </Setting>
+    <Setting Name="SPConnecting" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Data Source=172.16.0.102;Initial Catalog=StoredProcedureDB;User ID=system;Password=p@$$w0rd;Application Name=Validator;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
