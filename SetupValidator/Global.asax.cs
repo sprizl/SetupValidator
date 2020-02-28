@@ -1,6 +1,5 @@
 ﻿using Ninject;
 using Ninject.Web.Common;
-using SetupValidator.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
