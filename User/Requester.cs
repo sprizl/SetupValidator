@@ -55,7 +55,6 @@ namespace User
                 TResult result = (TResult)JsonConvert.DeserializeObject<TResult>(e.Message);
                 return result;
             }
-            
         }
 
         public SetupDataValidationResultDto Validate(ValidateDataDto setupData)
@@ -63,6 +62,43 @@ namespace User
             var result = BaseRequest<ValidateDataDto, SetupDataValidationResultDto>(
                 method: "details",
                 requestData: setupData);
+
+            return result;
+        }
+
+        private TResult BaseIIRequest<TResult>(string method)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{BaseUrl}/{method}");
+            request.Method = "GET";
+
+            //request.ContentLength = byteArray.Length;
+            request.ContentType = @"application/json";
+
+            try
+            {
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string responseText = reader.ReadToEnd();
+
+                        TResult result = (TResult)JsonConvert.DeserializeObject<TResult>(responseText);
+
+                        return result;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                TResult result = (TResult)JsonConvert.DeserializeObject<TResult>(e.Message);
+                return result;
+            }
+        }
+
+        public SetupDataLotDataDto GetAll()
+        {
+            var result = BaseIIRequest<SetupDataLotDataDto>(
+                method: "");
 
             return result;
         }
