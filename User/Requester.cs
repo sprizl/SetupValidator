@@ -40,13 +40,20 @@ namespace User
             {
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
-                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        string responseText = reader.ReadToEnd();
+                        using (var reader = new StreamReader(response.GetResponseStream()))
+                        {
+                            string responseText = reader.ReadToEnd();
 
-                        TResult result = (TResult)JsonConvert.DeserializeObject<TResult>(responseText);
+                            TResult result = JsonConvert.DeserializeObject<TResult>(responseText);
 
-                        return result;
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("HttpResponse :=" + response.StatusCode.ToString());
                     }
                 }
             }
