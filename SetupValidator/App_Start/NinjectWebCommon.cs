@@ -5,12 +5,14 @@ namespace SetupValidator.App_Start
 {
     using System;
     using System.Web;
-
+    using System.Web.Http;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
+    using SetupValidator.Abstract;
+    using SetupValidator.Concrete;
 
     public static class NinjectWebCommon 
     {
@@ -46,6 +48,7 @@ namespace SetupValidator.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
                 RegisterServices(kernel);
+                GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
                 return kernel;
             }
             catch
@@ -61,6 +64,7 @@ namespace SetupValidator.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<INormalRepository>().To<AdoNetNormalRepository>();
         }
     }
 }

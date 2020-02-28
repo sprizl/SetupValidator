@@ -15,14 +15,13 @@ namespace User
 
         public Requester()
         {
-            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-            BaseUrl = "http://localhost:44301/api/validator";
+            BaseUrl = "https://localhost:44301/api/validator";
         }
 
         private TResult BaseRequest<TInput, TResult>(string method, TInput requestData)
         {
             var jsonContent = JsonConvert.SerializeObject(requestData);
-
+            
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{BaseUrl}/{method}");
             request.Method = "POST";
 

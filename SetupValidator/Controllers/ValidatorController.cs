@@ -20,31 +20,25 @@ namespace SetupValidator.Controllers
         //Called Data from DB through GetData();
         public INormalRepository reposity { get; }
 
-        public ValidatorController()
-        {
-            reposity = new AdoNetNormalRepository();
-        }
-
         public ValidatorController(INormalRepository repo)
         {
             reposity = repo;
         }
 
         [HttpGet(), Route("")]
-        [ResponseType(typeof(LotDataDto))]
         public IHttpActionResult GetAllLotData()
         {
-            var data = reposity.LotDatas();
+            //var data = reposity.LotDatas();
             List<LotDataDto> lotDataDtos = new List<LotDataDto>();
 
             for (int i = 0; i < 5; i++)
             {
                 LotDataDto lotData = new LotDataDto();
 
-                lotData.LotNo = data.ElementAt(i).lotNo.Trim();
-                lotData.Package = data.ElementAt(i).packageName.Trim();
-                lotData.Device = data.ElementAt(i).deviceName.Trim();
-                lotData.FlowName = data.ElementAt(i).flowName.Trim();
+                lotData.LotNo = "LotNo" + i.ToString();
+                lotData.Package = "Package" + i.ToString();
+                lotData.Device = "Device" + i.ToString();
+                lotData.FlowName = "FlowName" + i.ToString();
 
                 lotDataDtos.Add(lotData);
             }
@@ -75,7 +69,6 @@ namespace SetupValidator.Controllers
         }
 
         [HttpPost(), Route("details")]
-        [ResponseType(typeof(LotDataDto))]
         public IHttpActionResult GetLotData([FromBody] ValidateDataDto setupData)
         {
             return Ok(new ValidationResultDto<ValidateDataDto>()
