@@ -8,6 +8,6 @@ namespace SetupValidator.Domain
 {
     public interface IEquipmentValidator
     {
-        ValidationResult Validate(int machineId, List<int> equipmentIdList, List<int> jigIdList, List<int> materialIdList, List<int> carrierIdList);
+        ValidationResult Validate(int machineId, List<string> equipmentIdList, List<string> jigIdList, List<string> materialIdList, List<string> carrierIdList);
     }
 }

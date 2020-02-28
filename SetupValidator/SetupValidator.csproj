@@ -179,6 +179,7 @@
     <Compile Include="Domain\ValidationResult.cs" />
     <Compile Include="DTOs\LotDataDto.cs" />
     <Compile Include="DTOs\ValidateDataDto.cs" />
+    <Compile Include="DTOs\ValidationResultDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

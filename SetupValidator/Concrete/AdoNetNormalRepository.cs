@@ -36,5 +36,34 @@ namespace SetupValidator.Concrete
                 return lotDatas;
             }
         }
+
+        public IEnumerable<ValidatorData> SetupDatas(string mcNo)
+        {
+            List<ValidatorData> setupDatas = new List<ValidatorData>();
+            var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_validator_ftsetupreport]"
+                                + "@mcNo = '" + mcNo + "', ";
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ValidatorData methodSetupData = new ValidatorData();
+
+                        if (!(reader["MachineId"] is DBNull)) methodSetupData.machineId = int.Parse(reader["MachineId"].ToString());
+                        if (!(reader["TestBoxAQRcode"] is DBNull)) methodSetupData.equipmentIdList.Add(reader["TestBoxAQRcode"].ToString());
+                        if (!(reader["TestBoxBQRcode"] is DBNull)) methodSetupData.equipmentIdList.Add(reader["TestBoxBQRcode"].ToString());
+                        if (!(reader["QRCodesocketChannel1"] is DBNull)) methodSetupData.jigIdList.Add(reader["QRCodesocketChannel1"].ToString());
+                        if (!(reader["QRCodesocketChannel2"] is DBNull)) methodSetupData.jigIdList.Add(reader["QRCodesocketChannel2"].ToString());
+                        
+                        setupDatas.Add(methodSetupData);
+                    }
+                    conn.Close();
+                }
+                return setupDatas;
+            }
+        }
     }
 }

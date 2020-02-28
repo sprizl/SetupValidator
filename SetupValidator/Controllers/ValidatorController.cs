@@ -18,118 +18,134 @@ namespace SetupValidator.Controllers
     public class ValidatorController : ApiController
     {
         //Called Data from DB through GetData();
-        public INormalRepository reposity;
-
-        //public ValidatorController(INormalRepository repo)
-        //{
-        //    reposity = repo;
-        //}
+        public INormalRepository reposity { get; }
 
         public ValidatorController()
         {
+            reposity = new AdoNetNormalRepository();
         }
 
-        [Route("")]
-        //[ResponseType(typeof(LotDataDto))]
-        [HttpGet]
+        public ValidatorController(INormalRepository repo)
+        {
+            reposity = repo;
+        }
+
+        [HttpGet(), Route("")]
+        [ResponseType(typeof(LotDataDto))]
         public IHttpActionResult GetAllLotData()
         {
-            reposity = new AdoNetNormalRepository();
             var data = reposity.LotDatas();
-            //List<LotData> lotDatas = new List<LotData>();
-            //var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
-            //using (var cmd = conn.CreateCommand())
+            List<LotDataDto> lotDataDtos = new List<LotDataDto>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                LotDataDto lotData = new LotDataDto();
+
+                lotData.LotNo = data.ElementAt(i).lotNo.Trim();
+                lotData.Package = data.ElementAt(i).packageName.Trim();
+                lotData.Device = data.ElementAt(i).deviceName.Trim();
+                lotData.FlowName = data.ElementAt(i).flowName.Trim();
+
+                lotDataDtos.Add(lotData);
+            }
+
+            return Ok(lotDataDtos);
+
+            //foreach (var item in data)
             //{
-            //    cmd.CommandText = "EXEC [StoredProcedureDB].[atom].[sp_get_trans_lots]";
-            //    conn.Open();
-            //    using (var reader = cmd.ExecuteReader())
-            //    {
-            //        while (reader.Read())
-            //        {
-            //            LotData methodLotData = new LotData();
+            //    LotDataDto lotData = new LotDataDto();
 
-            //            if (!(reader["LotNo"] is DBNull)) methodLotData.lotNo = reader["LotNo"].ToString();
-            //            if (!(reader["PackageId"] is DBNull)) methodLotData.packageId = int.Parse(reader["PackageId"].ToString());
-            //            if (!(reader["Package"] is DBNull)) methodLotData.packageName = reader["Package"].ToString();
-            //            if (!(reader["Device"] is DBNull)) methodLotData.deviceName = reader["Device"].ToString();
-            //            if (!(reader["StepNo"] is DBNull)) methodLotData.stepNo = int.Parse(reader["StepNo"].ToString());
-            //            if (!(reader["FlowName"] is DBNull)) methodLotData.flowName = reader["FlowName"].ToString();
+            //    lotData.LotNo = item.lotNo.Trim();
+            //    lotData.Package = item.packageName.Trim();
+            //    lotData.Device = item.deviceName.Trim();
+            //    lotData.FlowName = item.flowName.Trim();
 
-            //            lotDatas.Add(methodLotData);
-            //        }
-            //        conn.Close();
-            //    }
-            //    LotDataDto lotDataDto = new LotDataDto();
-            //    lotDataDto.LotNo = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.lotNo).FirstOrDefault();
-            //    lotDataDto.Package = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.packageName).FirstOrDefault();
-            //    lotDataDto.Device = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.deviceName).FirstOrDefault();
-            //    lotDataDto.FlowName = lotDatas.Where(g => g.lotNo.Contains("2003A4086V")).Select(g => g.flowName).FirstOrDefault();
-               
-               
+            //    lotDatas.Add(lotData);
+            //    //lotDataDto.LotNo = item.lotNo.Trim();
+            //    //lotDataDto.Package = item.packageName.Trim();
+            //    //lotDataDto.Device = item.deviceName.Trim();
+            //    //lotDataDto.FlowName = item.flowName.Trim();
             //}
-            return Ok(data);
+
+            //LotDataDto lotDataDto = new LotDataDto();
+            //lotDataDto.LotNo = lotDatas.Select(g => g.lotNo).ToString();
+            //lotDataDto.Package = lotDatas.Select(g => g.packageName).ToString();
+            //lotDataDto.Device = lotDatas.Select(g => g.deviceName).ToString();
+            //lotDataDto.FlowName = lotDatas.Select(g => g.flowName).ToString();
         }
 
-        [Route("details")]
+        [HttpPost(), Route("details")]
         [ResponseType(typeof(LotDataDto))]
-        [HttpPost]
-        public IHttpActionResult GetLotData([FromBody] ValidateDataDto validateDataDto)
+        public IHttpActionResult GetLotData([FromBody] ValidateDataDto setupData)
         {
-            //try
+            return Ok(new ValidationResultDto<ValidateDataDto>()
+            {
+                Source = setupData,
+                IsError = false,
+                Message = "This is a test"
+            });
+
+            //var setupDetails = reposity.SetupDatas(validateDataDto.machineName);
+
+            //ValidatorData validatorData = new ValidatorData();
+
+            //foreach (var item in setupDetails.Select(g => g.equipmentIdList))
             //{
-            //    var lotDetails = reposity.LotDatas();
-            //    List<LotData> lotDetailList = new List<LotData>();
-            //    lotDetailList = lotDetails.Where(g => g.lotNo.Contains(validateDataDto.lotNo.Trim())).ToList();
+            //    validatorData.equipmentIdList.Add(item.ToString());
             //}
-            //catch (Exception e)
+            //foreach (var item in setupDetails.Select(g => g.jigIdList))
             //{
-            //    return Ok(e);
+            //    validatorData.jigIdList.Add(item.ToString());
             //}
-
-            //if (lotDetailList.Count <= 0)
+            //foreach (var item in setupDetails.Select(g => g.materialIdList))
             //{
-            //    return NotFound();
+            //    validatorData.materialIdList.Add(item.ToString());
             //}
-
-            ValidatorData validatorData = new ValidatorData();
-            validatorData.machineId = 1;
-
-            List<int> lstEquipmentId = new List<int>();
-            lstEquipmentId.Add(1);
-            lstEquipmentId.Add(2);
-
-            validatorData.equipmentIdList = lstEquipmentId;
-
-            List<int> lstJigId = new List<int>();
-            lstJigId.Add(2);
-
-            validatorData.jigIdList = lstJigId;
-
-            List<int> lstMaterialId = new List<int>();
-            lstMaterialId.Add(3);
-
-            validatorData.materialIdList = lstMaterialId;
-
-            List<int> lstCarrierId = new List<int>();
-            lstCarrierId.Add(4);
-
-            validatorData.carrierIdList = lstCarrierId;
-
-            FTEquipmentValidator validator = new FTEquipmentValidator();
-
-            var result = validator.Validate(validatorData.machineId, validatorData.equipmentIdList, validatorData.jigIdList, validatorData.materialIdList, validatorData.carrierIdList);
-
-            return Ok(result);
-
-            //var lotDetails = reposity.LotDatas();
-            //List<LotData> lotDetailList = new List<LotData>();
-            //lotDetailList = lotDetails.Where(g => g.LotNo.Contains(validateDataDto.LotNo)).ToList();
-
-            //if (lotDetailList.Count == 0)
+            //foreach (var item in setupDetails.Select(g => g.carrierIdList))
             //{
-            //    return NotFound();
+            //    validatorData.carrierIdList.Add(item.ToString());
             //}
-            //return Ok(lotDetailList);
+
+            ////List<int> lstEquipmentId = new List<int>();
+            ////lstEquipmentId.Add(1);
+            ////lstEquipmentId.Add(2);
+
+            ////validatorData.equipmentIdList = lstEquipmentId;
+
+            ////List<int> lstJigId = new List<int>();
+            ////lstJigId.Add(2);
+
+            ////validatorData.jigIdList = lstJigId;
+
+            ////List<int> lstMaterialId = new List<int>();
+            ////lstMaterialId.Add(3);
+
+            ////validatorData.materialIdList = lstMaterialId;
+
+            ////List<int> lstCarrierId = new List<int>();
+            ////lstCarrierId.Add(4);
+
+            ////validatorData.carrierIdList = lstCarrierId;
+
+            //FTEquipmentValidator validator = new FTEquipmentValidator();
+
+            //var result = validator.Validate(int.Parse(setupDetails.Select(g => g.machineId).ToString())
+            //                              , validatorData.equipmentIdList
+            //                              , validatorData.jigIdList
+            //                              , validatorData.materialIdList
+            //                              , validatorData.carrierIdList);
+
+            //return Ok(result);
+
+            ////var lotDetails = reposity.LotDatas();
+            ////List<LotData> lotDetailList = new List<LotData>();
+            ////lotDetailList = lotDetails.Where(g => g.LotNo.Contains(validateDataDto.LotNo)).ToList();
+
+            ////if (lotDetailList.Count == 0)
+            ////{
+            ////    return NotFound();
+            ////}
+            ////return Ok(lotDetailList);
         }
 
         public IEnumerable<LotData> LotDatas()

@@ -8,7 +8,7 @@ namespace SetupValidator.Domain
 {
     public class FTEquipmentValidator : IEquipmentValidator
     {
-        public ValidationResult Validate(int machineId, List<int> equipmentIdList, List<int> jigIdList, List<int> materialIdList, List<int> carrierIdList)
+        public ValidationResult Validate(int machineId, List<string> equipmentIdList, List<string> jigIdList, List<string> materialIdList, List<string> carrierIdList)
         {
             return new ValidationResult(true, "Mockup validate is completed");
         }

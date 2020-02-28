@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace User
 {
-    public class ValidateDataDto
+    public class SetupDataValidationResultDto : ValidationResultDto<ValidateDataDto>
     {
-        public string lotNo { get; set; }
-        public string machineName { get; set; } 
     }
 }

@@ -6,5 +6,6 @@ namespace SetupValidator.Abstract
     public interface INormalRepository
     {
         IEnumerable<LotData> LotDatas();
+        IEnumerable<ValidatorData> SetupDatas(string mcNo);
     }
 }
