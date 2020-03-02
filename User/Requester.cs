@@ -15,7 +15,7 @@ namespace User
 
         public Requester()
         {
-            BaseUrl = "https://localhost:44301/api/validator";
+            BaseUrl = "https://localhost:44301/api";
         }
 
         private TResult BaseRequest<TInput, TResult>(string method, TInput requestData)
@@ -67,7 +67,7 @@ namespace User
         public SetupDataValidationResultDto Validate(ValidateDataDto setupData)
         {
             var result = BaseRequest<ValidateDataDto, SetupDataValidationResultDto>(
-                method: "details",
+                method: "validate",
                 requestData: setupData);
 
             return result;
