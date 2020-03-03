@@ -9,7 +9,7 @@ namespace User
     public class ValidationResultDto<T>
     {
         public T Source { get; set; }
-        public bool IsError { get; set; }
+        public bool IsPass { get; set; }
         public string Message { get; set; }
     }
 }

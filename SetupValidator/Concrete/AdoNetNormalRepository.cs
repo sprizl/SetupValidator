@@ -45,7 +45,8 @@ namespace SetupValidator.Concrete
             var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_validator_ftsetupreport] @mcNo = '" + mcNo + "'";
+                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_validator_ftsetupreport] " +
+                                  "@mcNo = '" + mcNo + "'";
 
                 conn.Open();
                 using (var reader = cmd.ExecuteReader())
@@ -60,8 +61,8 @@ namespace SetupValidator.Concrete
                         if (!(reader["ProgramName"] is DBNull)) methodSetupData.ProgramName = reader["ProgramName"].ToString();
                         if (!(reader["TesterType"] is DBNull)) methodSetupData.TesterType = reader["TesterType"].ToString();
                         if (!(reader["TestFlow"] is DBNull)) methodSetupData.TestFlow = reader["TestFlow"].ToString();
-                        if (!(reader["PCType"] is DBNull)) methodSetupData.TestFlow = reader["PCType"].ToString();
-                        if (!(reader["PCMain"] is DBNull)) methodSetupData.TestFlow = reader["PCMain"].ToString();
+                        if (!(reader["PCType"] is DBNull)) methodSetupData.PCType = reader["PCType"].ToString();
+                        if (!(reader["PCMain"] is DBNull)) methodSetupData.PCMain = reader["PCMain"].ToString();
                         if (!(reader["TesterNoAQRcode"] is DBNull)) methodSetupData.TesterIdList.Add(reader["TesterNoAQRcode"].ToString());
                         if (!(reader["TesterNoBQRcode"] is DBNull)) methodSetupData.TesterIdList.Add(reader["TesterNoBQRcode"].ToString());
                         if (!(reader["TestBoxAQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["TestBoxAQRcode"].ToString());
@@ -99,12 +100,12 @@ namespace SetupValidator.Concrete
             var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_setupchecksheet_getbom]"
-                    + "@PackageName = '" + packageName + "'"
-                    + "@CustomerDeviceName = '" + deviceName + "'"
-                    + "@TesterTypeName = '" + testerType + "'"
-                    + "@TestFlowName = '" + testFlow + "'"
-                    + "@PCMain = '" + pcMain + "'";
+                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_setupchecksheet_getbom] " +
+                                  "@PackageName = '"        +   packageName + "', " +
+                                  "@CustomerDeviceName = '" +   deviceName  + "', " +
+                                  "@TesterTypeName = '"     +   testerType  + "', " +
+                                  "@TestFlowName = '"       +   testFlow    + "', " +
+                                  "@PCMain = '"             +   pcMain      + "'";
 
                 conn.Open();
                 using (var reader = cmd.ExecuteReader())
@@ -124,34 +125,67 @@ namespace SetupValidator.Concrete
         }
 
         //Get Equipment
-        //public IEnumerable<> (int bomId)
-        //{
-        //    List<Bom> bomId = new List<Bom>();
-        //    var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
-        //    using (var cmd = conn.CreateCommand())
-        //    {
-        //        cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_setupchecksheet_getbom]"
-        //            + "@PackageName = '" + packageName + "'"
-        //            + "@CustomerDeviceName = '" + deviceName + "'"
-        //            + "@TesterTypeName = '" + testerType + "'"
-        //            + "@TestFlowName = '" + testFlow + "'"
-        //            + "@PCMain = '" + pcMain + "'";
+        public IEnumerable<Equipment> EquipmentDatas (int bomId)
+        {
+            List<Equipment> equipmentDatas = new List<Equipment>();
+            var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_validator_getequipmentbybomid] " +
+                                  "@bomId = " + bomId;
 
-        //        conn.Open();
-        //        using (var reader = cmd.ExecuteReader())
-        //        {
-        //            while (reader.Read())
-        //            {
-        //                Bom methodBomData = new Bom();
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Equipment methodEquipmentData = new Equipment();
 
-        //                if (!(reader["ID"] is DBNull)) methodBomData.BomId = int.Parse(reader["ID"].ToString());
+                        if (!(reader["ID"] is DBNull)) methodEquipmentData.EquipmentId = int.Parse(reader["ID"].ToString());
+                        if (!(reader["QRName"] is DBNull)) methodEquipmentData.EquipmentQRName = (reader["QRName"].ToString());
+                        if (!(reader["Name"] is DBNull)) methodEquipmentData.EquipmentName = (reader["Name"].ToString());
+                        if (!(reader["TypeId"] is DBNull)) methodEquipmentData.EquipmentId = int.Parse(reader["TypeId"].ToString());
+                        if (!(reader["TypeName"] is DBNull)) methodEquipmentData.EquipmentType = (reader["TypeName"].ToString());
 
-        //                bomId.Add(methodBomData);
-        //            }
-        //            conn.Close();
-        //        }
-        //        return bomId;
-        //    }
-        //}
+                        equipmentDatas.Add(methodEquipmentData);
+                    }
+                    conn.Close();
+                }
+                return equipmentDatas;
+            }
+        }
+
+        //Get Option
+        public IEnumerable<Option> OptionDatas(int bomId)
+        {
+            List<Option> optionDatas = new List<Option>();
+            var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_validator_getoptionbybomid] " +
+                                  "@bomId = " + bomId;
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Option methodOptionData = new Option();
+
+                        if (!(reader["ID"] is DBNull)) methodOptionData.OptionId = int.Parse(reader["ID"].ToString());
+                        if (!(reader["QRName"] is DBNull)) methodOptionData.OptionQRName = (reader["QRName"].ToString());
+                        if (!(reader["Name"] is DBNull)) methodOptionData.OptionName = (reader["Name"].ToString());
+                        if (!(reader["OptionName"] is DBNull)) methodOptionData.OptionGroupName = (reader["OptionName"].ToString());
+                        if (!(reader["Quantity"] is DBNull)) methodOptionData.Quantity = int.Parse(reader["Quantity"].ToString());
+                        if (!(reader["Setting"] is DBNull)) methodOptionData.Setting = (reader["Setting"].ToString());
+                        if (!(reader["OptionCategory"] is DBNull)) methodOptionData.OptionCategory = (reader["OptionCategory"].ToString());
+
+                        optionDatas.Add(methodOptionData);
+                    }
+                    conn.Close();
+                }
+                return optionDatas;
+            }
+        }
     }
 }

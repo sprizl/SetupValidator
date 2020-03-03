@@ -59,23 +59,57 @@ namespace SetupValidator.Controllers
             var setupDB = reposity.SetupDatas(setupData.machineName);
 
             //Keep Setup Data into Variable
-            int machineId = int.Parse(setupDB.Select(g => g.MachineId).FirstOrDefault().ToString());
-            string packageName = setupDB.Select(g => g.PackageName).FirstOrDefault().ToString();
-            string deviceName = setupDB.Select(g => g.DeviceName).FirstOrDefault().ToString();
-            string testerType = setupDB.Select(g => g.TesterType).FirstOrDefault().ToString();
-            string testFlow = setupDB.Select(g => g.TestFlow).FirstOrDefault().ToString();
-            string pcMain = setupDB.Select(g => g.PCMain).FirstOrDefault().ToString();
-
+            int machineId;
+            string packageName, deviceName, testerType, testFlow, pcMain;
+            try
+            {
+                machineId = int.Parse(setupDB.Select(g => g.MachineId).FirstOrDefault().ToString());
+                packageName = setupDB.Select(g => g.PackageName).FirstOrDefault().ToString();
+                deviceName = setupDB.Select(g => g.DeviceName).FirstOrDefault().ToString();
+                testerType = setupDB.Select(g => g.TesterType).FirstOrDefault().ToString();
+                testFlow = setupDB.Select(g => g.TestFlow).FirstOrDefault().ToString();
+                pcMain = setupDB.Select(g => g.PCMain).FirstOrDefault().ToString();
+            }
+            catch (Exception)
+            {
+                return Ok(new ValidationResultDto<ValidateDataDto>()
+                {
+                    Source = setupData,
+                    IsPass = false,
+                    Message = "Setup Data Error."
+                });
+            }
+            
             //Get Bom Id for query Option and Equipment from Master Data
             var bomDB = reposity.BomDatas(packageName, deviceName, testerType, testFlow, pcMain);
 
-            var masterDB = "";
+            //Keep BomId into Variable
+            int bomId;
+            try
+            {
+                bomId = int.Parse(bomDB.Select(g => g.BomId).FirstOrDefault().ToString());
+            }
+            catch (Exception)
+            {
+                return Ok(new ValidationResultDto<ValidateDataDto>()
+                {
+                    Source = setupData,
+                    IsPass = false,
+                    Message = "Bom Not Found."
+                });
+            }
+
+            //Get Equipment from Master Data (BOM)
+            var equipmentDB = reposity.EquipmentDatas(bomId);
+
+            //Get Option from Master Data (BOM)
+            var optionDB = reposity.OptionDatas(bomId);
 
             if (machineId == 1001) {
                 return Ok(new ValidationResultDto<ValidateDataDto>()
                 {
                     Source = setupData,
-                    IsError = true,
+                    IsPass = true,
                     Message = ""
                 });
             }
@@ -84,7 +118,7 @@ namespace SetupValidator.Controllers
                 return Ok(new ValidationResultDto<ValidateDataDto>()
                 {
                     Source = setupData,
-                    IsError = false,
+                    IsPass = false,
                     Message = "Not Match"
                 });
             }

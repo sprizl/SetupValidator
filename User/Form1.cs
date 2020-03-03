@@ -41,7 +41,7 @@ namespace User
             sb.AppendLine("Test request for validation");
             sb.AppendLine($"LotNo := {result.Source.lotNo}");
             sb.AppendLine($"MachineName := {result.Source.machineName}");
-            sb.AppendLine($"IsError := {result.IsError}");
+            sb.AppendLine($"IsError := {result.IsPass}");
             sb.AppendLine($"Message := {result.Message}");
 
             MessageBox.Show(sb.ToString());

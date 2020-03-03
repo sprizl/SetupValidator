@@ -7,7 +7,8 @@ namespace SetupValidator.Abstract
     {
         IEnumerable<LotData> LotDatas();
         IEnumerable<SetupData> SetupDatas(string mcNo);
-
         IEnumerable<Bom> BomDatas(string packageName, string deviceName, string testerType, string testFlow, string pcMain);
+        IEnumerable<Equipment> EquipmentDatas(int bomId);
+        IEnumerable<Option> OptionDatas(int bomId);
     }
 }
