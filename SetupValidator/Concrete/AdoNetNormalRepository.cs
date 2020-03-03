@@ -42,6 +42,7 @@ namespace SetupValidator.Concrete
         public IEnumerable<SetupData> SetupDatas(string mcNo)
         {
             List<SetupData> setupDatas = new List<SetupData>();
+
             var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
             using (var cmd = conn.CreateCommand())
             {
@@ -54,6 +55,7 @@ namespace SetupValidator.Concrete
                     while (reader.Read())
                     {
                         SetupData methodSetupData = new SetupData();
+                        EquipmentFormat equipmentFormat = new EquipmentFormat();
 
                         if (!(reader["MachineId"] is DBNull)) methodSetupData.MachineId = int.Parse(reader["MachineId"].ToString());
                         if (!(reader["PackageName"] is DBNull)) methodSetupData.PackageName = reader["PackageName"].ToString();
@@ -63,27 +65,31 @@ namespace SetupValidator.Concrete
                         if (!(reader["TestFlow"] is DBNull)) methodSetupData.TestFlow = reader["TestFlow"].ToString();
                         if (!(reader["PCType"] is DBNull)) methodSetupData.PCType = reader["PCType"].ToString();
                         if (!(reader["PCMain"] is DBNull)) methodSetupData.PCMain = reader["PCMain"].ToString();
-                        if (!(reader["TesterNoAQRcode"] is DBNull)) methodSetupData.TesterIdList.Add(reader["TesterNoAQRcode"].ToString());
-                        if (!(reader["TesterNoBQRcode"] is DBNull)) methodSetupData.TesterIdList.Add(reader["TesterNoBQRcode"].ToString());
-                        if (!(reader["TestBoxAQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["TestBoxAQRcode"].ToString());
-                        if (!(reader["TestBoxBQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["TestBoxBQRcode"].ToString());
-                        if (!(reader["AdaptorAQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["AdaptorAQRcode"].ToString());
-                        if (!(reader["AdaptorBQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["AdaptorBQRcode"].ToString());
-                        if (!(reader["DutcardAQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["DutcardAQRcode"].ToString());
-                        if (!(reader["DutcardBQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["DutcardBQRcode"].ToString());
-                        if (!(reader["BridgecableAQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["BridgecableAQRcode"].ToString());
-                        if (!(reader["BridgecableBQRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["BridgecableBQRcode"].ToString());
-                        if (!(reader["OptionType1QRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType1QRcode"].ToString());
-                        if (!(reader["OptionType2QRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType2QRcode"].ToString());
-                        if (!(reader["OptionType3QRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType3QRcode"].ToString());
-                        if (!(reader["OptionType4QRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType4QRcode"].ToString());
-                        if (!(reader["OptionType5QRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType5QRcode"].ToString());
-                        if (!(reader["OptionType6QRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType6QRcode"].ToString());
-                        if (!(reader["OptionType7QRcode"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType7QRcode"].ToString());
-                        if (!(reader["QRCodesocketChannel1"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocketChannel1"].ToString());
-                        if (!(reader["QRCodesocketChannel2"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocketChannel2"].ToString());
-                        if (!(reader["QRCodesocketChannel3"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocketChannel3"].ToString());
-                        if (!(reader["QRCodesocketChannel4"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocketChannel4"].ToString());
+                        if (!(reader["TesterNoA"] is DBNull)) methodSetupData.TesterIdList.Add(reader["TesterNoA"].ToString());
+                        if (!(reader["TesterNoB"] is DBNull)) methodSetupData.TesterIdList.Add(reader["TesterNoB"].ToString());
+
+                        if (!(reader["TestBoxA"] is DBNull)) equipmentFormat.EquipmentName = (reader["TestBoxA"].ToString());
+                        if (!(reader["TestBoxAType"] is DBNull)) equipmentFormat.EquipmentTypeName = (reader["TestBoxAType"].ToString());
+                        methodSetupData.EquipmentIdList.Add(equipmentFormat);
+
+                        //if (!(reader["TestBoxB"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["TestBoxB"].ToString());
+                        //if (!(reader["AdaptorA"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["AdaptorA"].ToString());
+                        //if (!(reader["AdaptorB"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["AdaptorB"].ToString());
+                        //if (!(reader["DutcardA"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["DutcardA"].ToString());
+                        //if (!(reader["DutcardB"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["DutcardB"].ToString());
+                        //if (!(reader["BridgecableA"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["BridgecableA"].ToString());
+                        //if (!(reader["BridgecableB"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["BridgecableB"].ToString());
+                        //if (!(reader["OptionType1"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType1"].ToString());
+                        //if (!(reader["OptionType2"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType2"].ToString());
+                        //if (!(reader["OptionType3"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType3"].ToString());
+                        //if (!(reader["OptionType4"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType4"].ToString());
+                        //if (!(reader["OptionType5"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType5"].ToString());
+                        //if (!(reader["OptionType6"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType6"].ToString());
+                        //if (!(reader["OptionType7"] is DBNull)) methodSetupData.EquipmentIdList.Add(reader["OptionType7"].ToString());
+                        if (!(reader["QRCodesocket1"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocket1"].ToString());
+                        if (!(reader["QRCodesocket2"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocket2"].ToString());
+                        if (!(reader["QRCodesocket3"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocket3"].ToString());
+                        if (!(reader["QRCodesocket4"] is DBNull)) methodSetupData.JigIdList.Add(reader["QRCodesocket4"].ToString());
 
                         setupDatas.Add(methodSetupData);
                     }
@@ -131,7 +137,7 @@ namespace SetupValidator.Concrete
             var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_validator_getequipmentbybomid] " +
+                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_setupchecksheet_getbomtestequipment] " +
                                   "@bomId = " + bomId;
 
                 conn.Open();
@@ -141,11 +147,8 @@ namespace SetupValidator.Concrete
                     {
                         Equipment methodEquipmentData = new Equipment();
 
-                        if (!(reader["ID"] is DBNull)) methodEquipmentData.EquipmentId = int.Parse(reader["ID"].ToString());
-                        if (!(reader["QRName"] is DBNull)) methodEquipmentData.EquipmentQRName = (reader["QRName"].ToString());
                         if (!(reader["Name"] is DBNull)) methodEquipmentData.EquipmentName = (reader["Name"].ToString());
-                        if (!(reader["TypeId"] is DBNull)) methodEquipmentData.EquipmentId = int.Parse(reader["TypeId"].ToString());
-                        if (!(reader["TypeName"] is DBNull)) methodEquipmentData.EquipmentType = (reader["TypeName"].ToString());
+                        if (!(reader["TypeName"] is DBNull)) methodEquipmentData.EquipmentTypeName = (reader["TypeName"].ToString());
 
                         equipmentDatas.Add(methodEquipmentData);
                     }
@@ -162,7 +165,7 @@ namespace SetupValidator.Concrete
             var conn = new SqlConnection(Properties.Settings.Default.SPConnecting);
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_validator_getoptionbybomid] " +
+                cmd.CommandText = "EXEC [StoredProcedureDB].[dbo].[sp_get_setupchecksheet_getbomoption] " +
                                   "@bomId = " + bomId;
 
                 conn.Open();
@@ -172,8 +175,6 @@ namespace SetupValidator.Concrete
                     {
                         Option methodOptionData = new Option();
 
-                        if (!(reader["ID"] is DBNull)) methodOptionData.OptionId = int.Parse(reader["ID"].ToString());
-                        if (!(reader["QRName"] is DBNull)) methodOptionData.OptionQRName = (reader["QRName"].ToString());
                         if (!(reader["Name"] is DBNull)) methodOptionData.OptionName = (reader["Name"].ToString());
                         if (!(reader["OptionName"] is DBNull)) methodOptionData.OptionGroupName = (reader["OptionName"].ToString());
                         if (!(reader["Quantity"] is DBNull)) methodOptionData.Quantity = int.Parse(reader["Quantity"].ToString());

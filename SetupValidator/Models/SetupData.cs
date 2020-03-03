@@ -10,7 +10,7 @@ namespace SetupValidator.Models
         public SetupData()
         {
             TesterIdList = new List<string>();
-            EquipmentIdList = new List<string>();
+            EquipmentIdList = new List<EquipmentFormat>();
             JigIdList = new List<string>();
             MaterialIdList = new List<string>();
             CarrierIdList = new List<string>();
@@ -26,9 +26,15 @@ namespace SetupValidator.Models
         public string PCType { get; set; }
         public string PCMain { get; set; }
         public List<string> TesterIdList { get; set; }
-        public List<string> EquipmentIdList { get; set; }
+        public List<EquipmentFormat> EquipmentIdList { get; set; }
         public List<string> JigIdList { get; set; }
         public List<string> MaterialIdList { get; set; }
         public List<string> CarrierIdList { get; set; }        
+    }
+
+    public class EquipmentFormat
+    {
+        public string EquipmentName { get; set; }
+        public string EquipmentTypeName { get; set; }
     }
 }

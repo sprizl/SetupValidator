@@ -16,17 +16,17 @@ namespace SetupValidator.Models
 
     public class Equipment
     {
-        public int EquipmentId { get; set; }
-        public string EquipmentQRName { get; set; }
+        //public int EquipmentId { get; set; }
+        //public string EquipmentQRName { get; set; }
         public string EquipmentName { get; set; }
-        public int EquipmentTypeId { get; set; }
-        public string EquipmentType { get; set; }
+        //public int EquipmentTypeId { get; set; }
+        public string EquipmentTypeName { get; set; }
     }
 
     public class Option
     {
-        public int OptionId { get; set; }
-        public string OptionQRName { get; set; }
+        //public int OptionId { get; set; }
+        //public string OptionQRName { get; set; }
         public string OptionName { get; set; }
         public string OptionGroupName { get; set; }
         public int Quantity { get; set; }
